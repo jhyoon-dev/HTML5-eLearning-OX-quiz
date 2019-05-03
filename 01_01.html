@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!--<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">-->
+    <title> </title>
+    <link href="./css/common.css" rel="stylesheet"/>
+    <script src="./js/jquery-3.1.1.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/data_load.js"></script>
+	<script src="./js/script.js"></script>
+	<script>
+		var endType = 'interactiveEnd';
+		var isComp = false; // 문제를 풀었는지의 여부
+		var correctNum = 2; // 정답변수 1:O, 2:X
+		
+		function loadSuccess(){
+            $('#btn_replay').click(function(){
+				sudden_quiz_reset();
+				isComp = false;
+			});
+
+			$('.select_o').on('click', function(){
+				if(!isComp){
+					$('.select_o .user_chk').fadeIn(300);
+					ansChk(1);
+				}
+			});
+
+			$('.select_x').on('click', function(){
+				if(!isComp){
+					$('.select_x .user_chk').fadeIn(300);
+					ansChk(2);
+				}
+			});
+
+			if(correctNum === 1){
+				$('.answer_area .answer').css('background', 'url(./images/sud_explain_o.png)');
+			} else {
+				$('.answer_area .answer').css('background', 'url(./images/sud_explain_x.png)');
+			}
+		}
+
+        function ansChk(num){
+			isComp = true;
+			if( correctNum == num ){
+				$('#se_quiz_correct')[0].play();
+				$('.display_result').css('background', 'url(./images/sud_result_o.png)').show();
+			} else {
+				$('#se_quiz_wrong')[0].play();
+				$('.display_result').css('background', 'url(./images/sud_result_x.png)').show();
+			}
+
+			$('.explain_wrap').fadeIn(300);
+			$('.select_o, .select_x').addClass('end');
+			if(correctNum === 1){
+				$('.select_o').addClass('answer').find('.display_answer').fadeIn(300);
+			}else{
+				$('.select_x').addClass('answer').find('.display_answer').fadeIn(300);
+			}
+
+			$('#next_bubble').fadeIn();
+		};
+	</script>
+</head>
+<body>
+	<div class="loading_wrap"><span class="loading"></span></div>
+    <div id="content_wrap">
+        <div id="content">
+        	<section class="content_html sudden">
+				<div class="question-wrap">
+					<img class="sudden" src="./images/sud.png"/>
+					<div class="display_result"></div>
+					<div class="question">경영목표는 조직구성원이 일정 기간 내에 달성해야 할 과제이며 경영진과 구성원들에게 요구되는 사항이다. 또 목표는 일정 기간 동안 성과를 나타내는 것으로 개인별 개별 목표와 조직의 목표가 동일한 내용으로 세워져야 한다.</div> <!-- 변경금지 : 퀴즈 질문 -->
+				</div>
+
+				<!-- 변경금지 : O X 선택란 -->
+				<div class="select_wrap">
+					<div class="select_o">
+						<img class="user_chk" src="./images/sud_usr_chk.png"/>
+						<img class="display_answer" src="./images/sud_answer.png"/>
+					</div>
+
+					<div class="select_x">
+						<img class="user_chk" src="./images/sud_usr_chk.png"/>
+						<img class="display_answer" src="./images/sud_answer.png"/>
+					</div>
+				</div>
+				<!-- 변경금지 : O X 선택란 -->
+				
+				<div class="explain_wrap">
+					<div class="answer_area"><div class="label_answer">정답</div><div class="answer"></div></div> <!-- 정답표시 안건드려도 됨 -->
+					<div class="explain_area"><div class="label_explain">해설</div>
+					<div class="explain"><p>목표는 일정 기간 동안 성과를 나타내는 것으로 개인에게는 개별목표가, 조직에게는 조직목표가 세워져야 한다.</p></div></div> <!-- 정답 해설 -->
+				</div>
+        	</section>
+
+            <!-- /////////////////// 공통부분 //////////////////-->
+        	
+        	<audio id="mainMedia" preload="auto" src="./sounds/narr_sudquiz.mp3"></audio>
+			<audio id="se_quiz_correct" preload="auto" src="./sounds/quiz_correct.mp3"></audio>
+			<audio id="se_quiz_wrong" preload="auto" src="./sounds/quiz_wrong.mp3"></audio>
+
+            <footer class="controls"></footer>
+            <div id="script_wrap"><div id="script_text"></div></div>
+            <!-- ///////////////// 공통부분 끝 /////////////////-->
+        </div>
+    </div>
+</body>
+</html>
